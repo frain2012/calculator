@@ -303,8 +303,21 @@ class WechatUtil
 	    return $signPackage;
 	}
 	/****
-	 * 
+	 * 小程序使用
 	 */
+    public static function getAppUserInfo($code=''){
+        $url="https://api.weixin.qq.com/sns/jscode2session?appid=".\Yii::$app->params['app']['appid']."&secret=".\Yii::$app->params['app']['appSecret'] ."&js_code=$code&grant_type=authorization_code";
+        $result = self::wchatCurlGet ( $url );
+        if ($result){
+            $json = json_decode($result,true);
+            if (!$json || !empty($json['errcode'])) {
+                return false;
+            }
+            return $json;
+        }
+        return false;
+    }
+
 	/**
 	 * 网页授权
 	 * @param unknown $AppID
