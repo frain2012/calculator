@@ -13,8 +13,8 @@ CREATE TABLE `account` (
   UNIQUE KEY `fh` (`tel`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='主帐号';
 
-INSERT INTO `account` VALUES ('1', '18356006031', '$2y$13$/4st6GDqwRB.aE9GdAY1nuurrsiIwWCXC.uijFyY89o/JE6ry9SVe', 'suWMq15OhBvA8iyi-tEUvLx_ktYhcJIs', '10', '1', null, null);
-INSERT INTO `account` VALUES ('5', '18356006032', '$2y$13$Y2nUlnY1sEaJn.vjTqRhr.ATq.oHRT7jKQOwrrIixjgu0herCcwqe', 'fftkgBpCLNRqHUPf5eiZ4bdUXO-MgQZc', '10', '10', '1', null);
+INSERT INTO `account` VALUES ('1', '18311111111', '$2y$13$/4st6GDqwRB.aE9GdAY1nuurrsiIwWCXC.uijFyY89o/JE6ry9SVe', 'suWMq15OhBvA8iyi-tEUvLx_ktYhcJIs', '10', '1', null, null);
+INSERT INTO `account` VALUES ('5', '18322222222', '$2y$13$Y2nUlnY1sEaJn.vjTqRhr.ATq.oHRT7jKQOwrrIixjgu0herCcwqe', 'fftkgBpCLNRqHUPf5eiZ4bdUXO-MgQZc', '10', '10', '1', null);
 
 CREATE TABLE `config` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
