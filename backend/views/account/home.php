@@ -6,7 +6,7 @@ use yii\widgets\LinkPager;
 $this->title = '配置中心';
 ?>
 <div class="breadcrumb">
-    <a href="/v2"> 设置</a>
+    <a href="javascript:;"> 设置</a>
 </div>
 
 <div class="app">
