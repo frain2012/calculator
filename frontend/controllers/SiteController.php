@@ -179,7 +179,7 @@ class SiteController extends Controller
                         return ['status'=>1,'msg'=>'责任比例不能为空'];
                     }
 
-                    $grade = Yii::$app->request->post('grade',0);   //1-父母，2-子女
+                    $grade = Yii::$app->request->post('grade',0);   //0-无,1-父母，2-子女
                     $year = Yii::$app->request->post('year',0);
                     if (!empty($grade)){
                         if (empty($year)){

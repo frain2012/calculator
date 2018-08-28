@@ -131,7 +131,7 @@ $this->title = '安徽省伤亡赔偿计算器';
 					<li>
 						<label class="font">被抚养类型：</label>
 						<select name="grade" id="grade" class="select1" onchange="grades()">
-							<option value="">请选择</option>
+							<option value="">无</option>
 							<option value="1">子女</option>
 							<option value="2">父母</option>
 						</select>
