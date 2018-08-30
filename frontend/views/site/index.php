@@ -132,16 +132,36 @@ $this->title = '安徽省伤亡赔偿计算器';
 						<label class="font">被抚养类型：</label>
 						<select name="grade" id="grade" class="select1" onchange="grades()">
 							<option value="">无</option>
-							<option value="1">子女</option>
-							<option value="2">父母</option>
+							<option value="1">有</option>
 						</select>
 						&nbsp;&nbsp;&nbsp;
 					</li>
-					<li id="years" style="display:none;">
-						<label class="font">被抚养人年龄：</label>
-						<input name="year" id="year" type="text" class="input1"/>
-						<label class="red">*</label>&nbsp;&nbsp;&nbsp;
-					</li>
+                    <li class="years" style="display:none;">
+                        <label class="font">被抚养人(子女)：</label>
+                        <input name="year1[]" id="year1" type="number" class="input1" maxlength="3" placeholder="年龄"/>
+                        &nbsp;&nbsp;&nbsp;
+                    </li>
+                    <li class="years" style="display:none;">
+                        <label class="font">被抚养人(子女)：</label>
+                        <input name="year1[]" id="year2" type="number" class="input1" maxlength="3" placeholder="年龄"/>
+                        &nbsp;&nbsp;&nbsp;
+                    </li>
+                    <li class="years" style="display:none;">
+                        <label class="font">被抚养人(父母)：</label>
+                        <input name="year2[]" id="year2" type="number" class="input1" maxlength="3" placeholder="年龄"/>
+                        &nbsp;&nbsp;&nbsp;
+                    </li>
+                    <li class="years" style="display:none;">
+                        <label class="font">被抚养人(父母)：</label>
+                        <input name="year2[]" id="year2" type="number" class="input1" maxlength="3" placeholder="年龄"/>
+                        &nbsp;&nbsp;&nbsp;
+                    </li>
+                    <li class="years" style="display:none;">
+                        <label class="font">均摊人数(最少):</label>
+                        <input name="raise" id="raise" type="number" maxlength="2" class="input1" placeholder="人数"/>
+                        <label class="red">*</label>
+                        &nbsp;
+                    </li>
 				</ul>
 			</form>
 		</div>
@@ -217,9 +237,9 @@ $this->title = '安徽省伤亡赔偿计算器';
 	function grades() {
 		var grade = $("#grade").val();
 		if(grade==1 || grade==2){
-			$("#years").show();
+			$(".years").show();
 		}else{
-			$("#years").hide();
+			$(".years").hide();
 			$("#year").val("");
 		}
 	}

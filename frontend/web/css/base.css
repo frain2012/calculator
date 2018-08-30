@@ -76,3 +76,13 @@ ul,ol{list-style:none;}
     background-color: #fff;
     padding: 5px 10px;;
 }
+
+.input2{
+    border: #7f9db9 1px solid;
+    font: 12px arial, verdana, sans-serif;
+    color: #000;
+    text-align: left;
+    text-decoration: none;
+    width: 60px;
+    height: 20px;
+}

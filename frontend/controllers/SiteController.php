@@ -135,11 +135,16 @@ class SiteController extends Controller
                     }
 
 
-                    $grade = Yii::$app->request->post('grade',0);   //1-父母，2-子女
-                    $year = Yii::$app->request->post('year',0);
+                    $grade = Yii::$app->request->post('grade',0);   //1-无，2-有
+                    $year1 = array_filter(Yii::$app->request->post('year1',0));     //被抚养年龄(子女)
+                    $year2 = array_filter(Yii::$app->request->post('year2',0));     //被抚养年龄(父母)
+                    $raise = Yii::$app->request->post('raise',0);   //均摊人数
                     if (!empty($grade)){
-                        if (empty($year)){
-                            return ['status'=>1,'msg'=>'被抚养年龄不能为空'];
+                        if (sizeof($year1)<1 && sizeof($year2)<1){
+                            return ['status'=>1,'msg'=>'被抚养年龄不能全为空'];
+                        }
+                        if (empty($raise)){
+                            return ['status'=>1,'msg'=>'均摊人数不能为空'];
                         }
                     }
 
@@ -151,25 +156,20 @@ class SiteController extends Controller
                     $age = $age+(500*$scale);     //责任比例
                     $str.="+(500*".$scale.")";
                     if (!empty($grade)){
-                        if($grade==1){
-                            if ($year<=18){
-                                $year=18;
-                            }else{
-                                $year=0;
-                            }
-                        }else{
-                            if ($year<=60){
-                                $year=20;
-                            }else if($year<=75){
-                                $year = 20-($year-60);
-
-                            }else{
-                                $year=5;
-                            }
+                        $this->transAge($year1,$year2);
+                        $yes = array_merge($year1,$year2);
+                        sort($yes);      //被抚养所有年龄
+                        //合计不超过当年消费性支出
+                        $size = sizeof($yes);
+                        $totalRaise=0;
+                        foreach ($yes as $v){
+                            $size--;
+                            $t = $v/($size+$raise);
+                            $s = ''.$v.'/('.$size.'+'.$raise.')';
+                            $str.="+(".$model->area_con_income."*".$s.")";
+                            $totalRaise=$totalRaise+($model->town_con_income*$t);
                         }
-
-                        $age = $age+(($model->town_con_income*$year)*2);
-                        $str.="+((".$model->town_con_income."*".$year.")*2)";
+                        $age = $age+$totalRaise;
                     }
                     $total = $age+$dmoney;
                     return ['status'=>0,'msg'=>'成功','data'=>$total,'str'=>$str];
@@ -179,11 +179,16 @@ class SiteController extends Controller
                         return ['status'=>1,'msg'=>'责任比例不能为空'];
                     }
 
-                    $grade = Yii::$app->request->post('grade',0);   //0-无,1-父母，2-子女
-                    $year = Yii::$app->request->post('year',0);
+                    $grade = Yii::$app->request->post('grade',0);   //1-无，2-有
+                    $year1 = array_filter(Yii::$app->request->post('year1',0));     //被抚养年龄(子女)
+                    $year2 = array_filter(Yii::$app->request->post('year2',0));     //被抚养年龄(父母)
+                    $raise = Yii::$app->request->post('raise',0);   //均摊人数
                     if (!empty($grade)){
-                        if (empty($year)){
-                            return ['status'=>1,'msg'=>'被抚养年龄不能为空'];
+                        if (sizeof($year1)<1 && sizeof($year2)<1){
+                            return ['status'=>1,'msg'=>'被抚养年龄不能全为空'];
+                        }
+                        if (empty($raise)){
+                            return ['status'=>1,'msg'=>'均摊人数不能为空'];
                         }
                     }
 
@@ -195,24 +200,20 @@ class SiteController extends Controller
                     $age = $age+(500*$scale);     //责任比例
                     $str.="+(500*".$scale.")";
                     if (!empty($grade)){
-                        if($grade==1){
-                            if ($year<=18){
-                                $year=18;
-                            }else{
-                                $year=0;
-                            }
-                        }else{
-                            if ($year<=60){
-                                $year=20;
-                            }else if($year<=75){
-                                $year = 20-($year-60);
-
-                            }else{
-                                $year=5;
-                            }
+                        $this->transAge($year1,$year2);
+                        $yes = array_merge($year1,$year2);
+                        sort($yes);      //被抚养所有年龄
+                        //合计不超过当年消费性支出
+                        $size = sizeof($yes);
+                        $totalRaise=0;
+                        foreach ($yes as $v){
+                            $size--;
+                            $t = $v/($size+$raise);
+                            $s = ''.$v.'/('.$size.'+'.$raise.')';
+                            $str.="+(".$model->area_con_income."*".$s.")";
+                            $totalRaise=$totalRaise+($model->area_con_income*$t);
                         }
-                        $age = $age+(($model->area_con_income*$year)*2);
-                        $str.="+((".$model->area_con_income."*".$year.")*2)";
+                        $age = $age+$totalRaise;
                     }
                     $total = $age+$dmoney;
                     return ['status'=>0,'msg'=>'成功','data'=>$total,'str'=>$str];
@@ -224,6 +225,32 @@ class SiteController extends Controller
                     $total = $dmoney;
                     $str.="+(".$day."*60)+(132.88*".$day.")";
                     return ['status'=>0,'msg'=>'成功','data'=>$total,'str'=>$str];
+            }
+        }
+    }
+
+
+    /**
+     * 年龄转换
+     * @param $arry1
+     * @param $arry2
+     */
+    private function transAge(&$arry1,&$arry2){
+        foreach ($arry1 as &$value){
+            if ($value<=18){
+                $value=18-$value;
+            }else{
+                $value=0;
+            }
+        }
+        foreach ($arry2 as &$value){
+            if ($value<=60){
+                $value=20;
+            }else if($value<=75){
+                $value = 20-($value-60);
+
+            }else{
+                $value=5;
             }
         }
     }
